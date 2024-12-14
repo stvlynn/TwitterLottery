@@ -1,0 +1,475 @@
+app:
+  description: ''
+  icon: 🎰
+  icon_background: '#FEF7C3'
+  mode: workflow
+  name: Twitter Lottery
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.4
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 7a37657a-9d42-47c8-8784-18ca6fc711c7
+    name: rss_hub_3
+    selector:
+    - env
+    - rss_hub_3
+    value: ''
+    value_type: secret
+  - description: ''
+    id: 7d4bc1ab-60d1-4391-aedd-141cad0745f3
+    name: rss_hub_2
+    selector:
+    - env
+    - rss_hub_2
+    value: ''
+    value_type: secret
+  - description: ''
+    id: 8068c787-d188-456c-9531-a2cf85a1ac17
+    name: rss_hub
+    selector:
+    - env
+    - rss_hub
+    value: ''
+    value_type: secret
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: code
+      id: 1734161176558-source-1734162109538-target
+      source: '1734161176558'
+      sourceHandle: source
+      target: '1734162109538'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: 1734162109538-source-1734162600898-target
+      source: '1734162109538'
+      sourceHandle: source
+      target: '1734162600898'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: end
+      id: 1734162600898-false-1734162634983-target
+      source: '1734162600898'
+      sourceHandle: 'false'
+      target: '1734162634983'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1734162600898-true-1734162714375-target
+      source: '1734162600898'
+      sourceHandle: 'true'
+      target: '1734162714375'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: if-else
+      id: 1734162714375-source-1734164645373-target
+      source: '1734162714375'
+      sourceHandle: source
+      target: '1734164645373'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1734164645373-true-1734164549729-target
+      source: '1734164645373'
+      sourceHandle: 'true'
+      target: '1734164549729'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: end
+      id: 1734164645373-false-1734164673288-target
+      source: '1734164645373'
+      sourceHandle: 'false'
+      target: '1734164673288'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 1734164549729-source-1734169102678-target
+      source: '1734164549729'
+      sourceHandle: source
+      target: '1734169102678'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: tweet_url
+          max_length: 96
+          options: []
+          required: true
+          type: text-input
+          variable: tweet_url
+        - label: lang
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: lang
+        - label: num
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: num
+      height: 142
+      id: '1734161176558'
+      position:
+        x: 79.01786040473661
+        y: 282
+      positionAbsolute:
+        x: 79.01786040473661
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import re\n\ndef main(tweet_url: str) -> dict:\n    twitter_id = None\n\
+          \    result = \"\"\n    \n    if tweet_url.startswith(\"https://twitter.com/\"\
+          ) or tweet_url.startswith(\"https://x.com/\"):\n        # Remove any query\
+          \ parameters\n        url_without_params = re.sub(r'\\?.*', '', tweet_url)\n\
+          \        \n        # Extract the full path after domain\n        full_path\
+          \ = url_without_params.replace(\"https://x.com/\", \"\").replace(\"https://twitter.com/\"\
+          , \"\")\n        \n        # Split the path to get the Twitter ID (first\
+          \ part before /status/)\n        path_parts = full_path.split(\"/\")\n \
+          \       \n        # Set result and twitter_id\n        result = full_path\n\
+          \        twitter_id = path_parts[0] if path_parts else None\n    else:\n\
+          \        result = \"wrong_url\"\n    \n    return {\n        \"result\"\
+          : result,\n        \"twitter_id\": twitter_id\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+          twitter_id:
+            children: null
+            type: string
+        selected: false
+        title: url processing
+        type: code
+        variables:
+        - value_selector:
+          - '1734161176558'
+          - tweet_url
+          variable: tweet_url
+      height: 54
+      id: '1734162109538'
+      position:
+        x: 384
+        y: 282
+      positionAbsolute:
+        x: 384
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is not
+            id: 62ab7c36-0913-43f1-bded-d4a26620c2fb
+            value: wrong_url
+            varType: string
+            variable_selector:
+            - '1734162109538'
+            - result
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 126
+      id: '1734162600898'
+      position:
+        x: 688
+        y: 282
+      positionAbsolute:
+        x: 688
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1734162109538'
+          - result
+          variable: err
+        selected: false
+        title: wrong_url end
+        type: end
+      height: 90
+      id: '1734162634983'
+      position:
+        x: 996
+        y: 495
+      positionAbsolute:
+        x: 996
+        y: 495
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: ''
+        method: get
+        params: =:null
+        selected: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: RSS Hub
+        type: http-request
+        url: '{{#env.rss_hub_3#}}/twitter/tweet/{{#1734162109538.result#}}'
+        variables: []
+      height: 116
+      id: '1734162714375'
+      position:
+        x: 996
+        y: 282
+      positionAbsolute:
+        x: 996
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import xml.etree.ElementTree as ET\nimport re\nimport random\n\ndef\
+          \ extract_twitter_id(link):\n   \"\"\"Extract Twitter ID from a link.\"\"\
+          \"\n   match = re.search(r'https://(?:x|twitter)\\.com/([^/]+)', link)\n\
+          \   return match.group(1) if match else None\n\ndef main(tweet: str, twitter_id:\
+          \ str, num: int) -> dict:\n   # Remove all escape characters\n   tweet =\
+          \ tweet.replace('\\\\', '')\n   \n   try:\n       # Remove XML declaration\n\
+          \       tweet = tweet.replace('<?xml version=\"1.0\" encoding=\"UTF-8\"\
+          ?>', '').strip()\n       root = ET.fromstring(tweet)\n   except Exception:\n\
+          \       return {\"award_winners\": []}\n   \n   # Find channel element\n\
+          \   channel = root.find('channel')\n   if channel is None:\n       return\
+          \ {\"award_winners\": []}\n   \n   # Create user list\n   user_list = []\n\
+          \   \n   # Iterate through item elements\n   for item in channel.findall('item'):\n\
+          \       # Extract link and author\n       link = item.find('link')\n   \
+          \    author = item.find('author')\n       \n       if link is None or author\
+          \ is None:\n           continue\n       \n       # Extract Twitter ID\n\
+          \       item_twitter_id = extract_twitter_id(link.text)\n       \n     \
+          \  if item_twitter_id and item_twitter_id != twitter_id:\n           user_entry\
+          \ = f\"\\\"{item_twitter_id}\\\":\\\"{author.text}\\\"\"\n           \n\
+          \           if user_entry not in user_list:\n               user_list.append(user_entry)\n\
+          \   \n   # Randomly select award winners\n   award_winners = random.sample(user_list,\
+          \ min(num, len(user_list))) if user_list else []\n   \n   return {\"award_winners\"\
+          : award_winners}"
+        code_language: python3
+        desc: ''
+        outputs:
+          award_winners:
+            children: null
+            type: array[string]
+        selected: false
+        title: lottery
+        type: code
+        variables:
+        - value_selector:
+          - '1734162714375'
+          - body
+          variable: tweet
+        - value_selector:
+          - '1734162109538'
+          - twitter_id
+          variable: twitter_id
+        - value_selector:
+          - '1734161176558'
+          - num
+          variable: num
+      height: 54
+      id: '1734164549729'
+      position:
+        x: 1620.0860857145765
+        y: 268.25876547270207
+      positionAbsolute:
+        x: 1620.0860857145765
+        y: 268.25876547270207
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: b8ae81e4-0a02-4378-a4ca-688669973b36
+            numberVarType: constant
+            value: '200'
+            varType: number
+            variable_selector:
+            - '1734162714375'
+            - status_code
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: status check
+        type: if-else
+      height: 126
+      id: '1734164645373'
+      position:
+        x: 1284.7999938740018
+        y: 282
+      positionAbsolute:
+        x: 1284.7999938740018
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1734162714375'
+          - status_code
+          variable: err
+        selected: false
+        title: request error End
+        type: end
+      height: 90
+      id: '1734164673288'
+      position:
+        x: 1620.0860857145765
+        y: 433.13599223087596
+      positionAbsolute:
+        x: 1620.0860857145765
+        y: 433.13599223087596
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1734164549729'
+          - award_winners
+          variable: result
+        selected: false
+        title: lottery result
+        type: end
+      height: 90
+      id: '1734169102678'
+      position:
+        x: 1996.797302140526
+        y: 268.25876547270207
+      positionAbsolute:
+        x: 1996.797302140526
+        y: 268.25876547270207
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -564.4172606471041
+      y: 55.677740876118264
+      zoom: 1.1859144994109472
