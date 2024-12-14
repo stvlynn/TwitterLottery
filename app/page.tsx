@@ -7,7 +7,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-xl mx-auto space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl" style={{ fontFamily: 'DotMatrix' }}>
             Twitter Lottery
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
