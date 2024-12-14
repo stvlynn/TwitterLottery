@@ -29,19 +29,19 @@ export const metadata: Metadata = {
     siteName: 'Twitter Lottery',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: 'Twitter Lottery Preview',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/favicon.png`,
+        width: 192,
+        height: 192,
+        alt: 'Twitter Lottery Logo',
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: 'Twitter Lottery - Draw Winners from Twitter/X Post Replies',
     description: 'A free tool to randomly select winners from Twitter/X post replies. Perfect for giveaways, contests, and social media campaigns.',
     creator: '@stv_lynn',
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/og-image.png`],
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL}/favicon.png`],
   },
   robots: {
     index: true,
