@@ -10,7 +10,6 @@ import { Loader2, BarChart3 } from 'lucide-react';
 import { runTweetUrlLottery, runKeywordLottery } from '@/lib/dify';
 import { isValidTwitterUrl } from '@/lib/utils/url';
 import { isValidTwitterId } from '@/lib/utils/validation';
-import { storeWinners } from '@/lib/storage';
 import type { LotteryMode } from '@/lib/types';
 
 export function LotteryForm() {
@@ -18,7 +17,7 @@ export function LotteryForm() {
   const [tweetUrl, setTweetUrl] = useState('');
   const [keyword, setKeyword] = useState('');
   const [twitterId, setTwitterId] = useState('');
-  const [twitterIdError, setTwitterIdError] = useState('');
+  const [twitterIdError, setTwitterIdError] = useState<string | null>(null);
   const [winnerCount, setWinnerCount] = useState('1');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -29,7 +28,7 @@ export function LotteryForm() {
     if (value && !isValidTwitterId(value)) {
       setTwitterIdError('Twitter ID can only contain letters, numbers, and underscores');
     } else {
-      setTwitterIdError('');
+      setTwitterIdError(null);
     }
   };
 
@@ -60,7 +59,7 @@ export function LotteryForm() {
         ? await runTweetUrlLottery(tweetUrl, parseInt(winnerCount))
         : await runKeywordLottery(keyword, twitterId, parseInt(winnerCount));
 
-      storeWinners(winners);
+      localStorage.setItem('winners', JSON.stringify(winners));
       if (mode === 'tweet_url') {
         localStorage.setItem('lottery_tweet_url', tweetUrl);
       }
@@ -207,7 +206,11 @@ export function LotteryForm() {
       </div>
 
       <div className="space-y-4">
-        <Button type="submit" className="w-full" disabled={isLoading || (mode === 'keyword' && twitterId && !!twitterIdError)}>
+        <Button 
+          type="submit" 
+          className="w-full" 
+          disabled={isLoading || (mode === 'keyword' && twitterId && Boolean(twitterIdError))}
+        >
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -219,7 +222,6 @@ export function LotteryForm() {
         </Button>
 
         <Button
-          type="button"
           variant="outline"
           className="w-full gap-2"
           onClick={() => window.open('https://twi.am', '_blank')}
