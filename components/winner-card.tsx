@@ -1,18 +1,18 @@
 interface WinnerCardProps {
   username: string;
   displayName: string;
-  index: number;
+  rank: number;
 }
 
 import { Card } from '@/components/ui/card';
 
-export function WinnerCard({ username, displayName, index }: WinnerCardProps) {
+export function WinnerCard({ username, displayName, rank }: WinnerCardProps) {
   return (
     <Card className="p-6">
       <div className="flex items-center gap-4">
         <div className="flex-shrink-0">
           <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg bg-yellow-100 text-yellow-700">
-            {index + 1}
+            {rank}
           </div>
         </div>
         <div>

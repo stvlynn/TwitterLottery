@@ -97,9 +97,9 @@ export default function ResultsPage() {
                 {winners.map((winner: Winner, index: number) => (
                   <WinnerCard 
                     key={index} 
-                    username={winner.userName} 
-                    displayName={winner.userId}
-                    index={index}
+                    username={winner.id} 
+                    displayName={winner.name}
+                    rank={index + 1}
                   />
                 ))}
               </div>

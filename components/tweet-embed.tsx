@@ -12,41 +12,45 @@ interface TweetEmbedProps {
   tweetUrl: string;
 }
 
+function getTweetId(url: string): string | null {
+  const match = url.match(/(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/);
+  return match ? match[1] : null;
+}
+
 export function TweetEmbed({ tweetUrl }: TweetEmbedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scriptLoadedRef = useRef(false);
+  const tweetId = getTweetId(tweetUrl);
 
   useEffect(() => {
-    const loadTweet = () => {
-      if (!containerRef.current) return;
-      
-      // 清除容器内容
-      containerRef.current.innerHTML = '';
+    if (!tweetId || !containerRef.current) return;
 
-      if (window.twttr) {
-        window.twttr.widgets.createTweet(
-          tweetUrl.split('/').pop()!,
-          containerRef.current,
-          {
-            theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-            width: '100%',
-          }
-        );
-      }
+    // 清除容器内容
+    containerRef.current.innerHTML = '';
+
+    const loadTweet = () => {
+      window.twttr?.widgets.createTweet(
+        tweetId,
+        containerRef.current,
+        {
+          theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+          width: '100%',
+        }
+      );
     };
 
-    if (!scriptLoadedRef.current) {
+    if (window.twttr) {
+      loadTweet();
+    } else {
       const script = document.createElement('script');
       script.src = 'https://platform.twitter.com/widgets.js';
-      script.onload = () => {
-        scriptLoadedRef.current = true;
-        loadTweet();
-      };
+      script.onload = loadTweet;
       document.head.appendChild(script);
-    } else {
-      loadTweet();
     }
-  }, [tweetUrl]);
+  }, [tweetId]);
+
+  if (!tweetId) {
+    return null;
+  }
 
   return <div ref={containerRef} className="w-full" />;
 }
