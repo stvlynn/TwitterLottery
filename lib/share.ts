@@ -5,7 +5,7 @@ type ShareContent = {
   language: string;
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://twitter-lottery.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://lottery.twi.am';
 
 const getShareContent = (winners: Winner[]): ShareContent => {
   // Get browser language
@@ -14,7 +14,7 @@ const getShareContent = (winners: Winner[]): ShareContent => {
     : 'en';
 
   const winnerMentions = winners
-    .map(winner => `@${winner.userId}`)
+    .map(winner => `@${winner.id}`)
     .join(' ');
 
   // Chinese content
