@@ -209,7 +209,7 @@ export function LotteryForm() {
         <Button 
           type="submit" 
           className="w-full" 
-          disabled={isLoading || (mode === 'keyword' && twitterId && Boolean(twitterIdError))}
+          disabled={Boolean(isLoading || (mode === 'keyword' && twitterId && twitterIdError))}
         >
           {isLoading ? (
             <>
