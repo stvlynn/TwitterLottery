@@ -10,6 +10,7 @@ import { Loader2, BarChart3 } from 'lucide-react';
 import { runTweetUrlLottery, runKeywordLottery } from '@/lib/dify';
 import { isValidTwitterUrl } from '@/lib/utils/url';
 import { isValidTwitterId } from '@/lib/utils/validation';
+import { storeWinners } from '@/lib/storage';
 import type { LotteryMode } from '@/lib/types';
 
 export function LotteryForm() {
@@ -59,7 +60,7 @@ export function LotteryForm() {
         ? await runTweetUrlLottery(tweetUrl, parseInt(winnerCount))
         : await runKeywordLottery(keyword, twitterId, parseInt(winnerCount));
 
-      localStorage.setItem('winners', JSON.stringify(winners));
+      storeWinners(winners);
       if (mode === 'tweet_url') {
         localStorage.setItem('lottery_tweet_url', tweetUrl);
       }
